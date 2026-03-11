@@ -2,75 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home</title>
   <link rel="stylesheet" href="styles/home.css">
 </head>
 <body onload="checkLogin()">
-  <div class="top-user">
-    Logged in as: <span id="usernameDisplay">Loading...</span>
-  </div>
 
-  <div class="container">
-    <h1>Home</h1>
-    <p>You are logged in.</p>
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">T</div>
+      <div>
+        <div class="logo-title">Tohtty App</div>
+        <div class="logo-sub">Dashboard</div>
+      </div>
+    </div>
 
-    <div class="dashboard-grid">
+    <div class="userbox">
+      <div id="usernameDisplay">Loading...</div>
+      <div class="role">Role: <span id="roleDisplay">...</span></div>
+    </div>
+  </header>
 
-      <div class="card">
+  <main class="page">
+    <h1 class="page-title">Home dashboard</h1>
+    <p class="page-sub">Manage your account and tools</p>
+
+    <div class="grid">
+      <div class="card actions-card">
         <h2>Quick Actions</h2>
-        <div class="button-column">
-          <button type="button" onclick="loadProfile()">Load profile</button>
-          <button type="button" onclick="loadNotifications()">Notifications</button>
-          <button type="button" onclick="logout()">Logout</button>
-        </div>
+
+        <button type="button" onclick="loadProfile()">Load profile</button>
+        <button type="button" onclick="loadNotifications()">Notifications</button>
+        <button type="button" onclick="changeOwnPassword()">Change password</button>
+        <button type="button" class="danger" onclick="logout()">Logout</button>
       </div>
 
-      <div class="card">
-        <h2>Chat Box</h2>
-        <div class="chat-box" id="chatBox">
-          <div class="chat-message system">Welcome to your dashboard.</div>
-          <div class="chat-message">You can later turn this into a real chat.</div>
+      <div class="card chat-card">
+        <h2>Chat</h2>
+
+        <div id="chatBox" class="chat-box">
+          <div class="msg system-message">Welcome to the dashboard.</div>
+          <div class="msg">Chat will later use WebSocket.</div>
         </div>
 
-        <div class="chat-input-row">
+        <div class="chat-input">
           <input type="text" id="chatInput" placeholder="Write something...">
           <button type="button" onclick="sendFakeMessage()">Send</button>
         </div>
       </div>
 
-      <div class="card">
+      <div class="card account-card">
         <h2>Account</h2>
-        <p><strong>Username:</strong> <span id="accountUsername">Loading...</span></p>
-        <p><strong>Role:</strong> <span id="accountRole">User</span></p>
-        <div class="button-column">
-          <button type="button" onclick="changeOwnPassword()">Change my password</button>
+
+        <div class="account-info">
+          <div class="info-row">
+            <span class="info-label">User</span>
+            <span class="info-value" id="accountUsername">Loading...</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Role</span>
+            <span class="info-value" id="accountRole">Loading...</span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="card" id="adminPanel" style="display: none;">
-        <h2>Admin Panel</h2>
-        <p>Visible only for admins.</p>
-
-        <div class="button-row">
-          <button type="button" onclick="loadUsers()">Refresh users</button>
+    <div id="adminPanel" class="card admin" style="display:none;">
+      <div class="admin-header">
+        <div>
+          <h2>Admin Panel</h2>
+          <p class="admin-sub">Manage users and reset passwords</p>
         </div>
 
-        <div id="usersList" class="users-list">
-          <p>No users loaded.</p>
-        </div>
+        <button type="button" onclick="loadUsers()">Refresh users</button>
       </div>
 
-      <div class="card">
-        <h2>System</h2>
-        <div class="button-column">
-          <button type="button" onclick="pingServer()">Ping server</button>
-          <button type="button" onclick="clearChat()">Clear chat box</button>
-        </div>
+      <div id="usersList" class="users-list">
+        <p>No users loaded.</p>
       </div>
+    </div>
 
+    <div class="card system-panel">
+      <h2>System</h2>
+
+      <div class="system-actions">
+        <button type="button" onclick="pingServer()">Ping server</button>
+        <button type="button" onclick="clearChat()">Clear chat</button>
+      </div>
     </div>
 
     <p id="result"></p>
+  </main>
+
+  <div id="resetPasswordModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Reset password</h3>
+        <button type="button" class="close-button" onclick="closeResetPasswordModal()">×</button>
+      </div>
+
+      <p class="modal-text">
+        Set a new password for <strong id="resetPasswordUsername">user</strong>
+      </p>
+
+      <label class="modal-label" for="resetPasswordInput">New password</label>
+      <input type="password" id="resetPasswordInput" placeholder="Enter new password">
+
+      <label class="modal-label" for="resetPasswordConfirmInput">Confirm password</label>
+      <input type="password" id="resetPasswordConfirmInput" placeholder="Confirm new password">
+
+      <p id="resetPasswordError" class="modal-error"></p>
+
+      <div class="modal-actions">
+        <button type="button" class="secondary-button" onclick="closeResetPasswordModal()">Cancel</button>
+        <button type="button" onclick="submitResetPassword()">Reset password</button>
+      </div>
+    </div>
   </div>
 
   <script src="scripts/validation.js"></script>
