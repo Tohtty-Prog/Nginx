@@ -81,6 +81,7 @@ async function checkLogin() {
         })
 
         if (response.status !== 200) {
+            localStorage.removeItem("token")
             window.location.href = "/index.html"
         }
 
