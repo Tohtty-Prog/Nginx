@@ -3,21 +3,77 @@
 <head>
   <meta charset="utf-8">
   <title>Home</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/home.css">
 </head>
 <body onload="checkLogin()">
+  <div class="top-user">
+    Logged in as: <span id="usernameDisplay">Loading...</span>
+  </div>
+
   <div class="container">
     <h1>Home</h1>
     <p>You are logged in.</p>
 
-    <div class="button-row">
-      <button type="button" onclick="logout()">Logout</button>
+    <div class="dashboard-grid">
+
+      <div class="card">
+        <h2>Quick Actions</h2>
+        <div class="button-column">
+          <button type="button" onclick="loadProfile()">Load profile</button>
+          <button type="button" onclick="loadNotifications()">Notifications</button>
+          <button type="button" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Chat Box</h2>
+        <div class="chat-box" id="chatBox">
+          <div class="chat-message system">Welcome to your dashboard.</div>
+          <div class="chat-message">You can later turn this into a real chat.</div>
+        </div>
+
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Write something...">
+          <button type="button" onclick="sendFakeMessage()">Send</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Account</h2>
+        <p><strong>Username:</strong> <span id="accountUsername">Loading...</span></p>
+        <p><strong>Role:</strong> <span id="accountRole">User</span></p>
+        <div class="button-column">
+          <button type="button" onclick="changeOwnPassword()">Change my password</button>
+        </div>
+      </div>
+
+      <div class="card" id="adminPanel" style="display: none;">
+        <h2>Admin Panel</h2>
+        <p>Visible only for admins.</p>
+
+        <div class="button-row">
+          <button type="button" onclick="loadUsers()">Refresh users</button>
+        </div>
+
+        <div id="usersList" class="users-list">
+          <p>No users loaded.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>System</h2>
+        <div class="button-column">
+          <button type="button" onclick="pingServer()">Ping server</button>
+          <button type="button" onclick="clearChat()">Clear chat box</button>
+        </div>
+      </div>
+
     </div>
 
     <p id="result"></p>
   </div>
 
-  <script src="validation.js"></script>
-  <script src="auth.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/auth.js"></script>
 </body>
 </html>

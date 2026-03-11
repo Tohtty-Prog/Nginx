@@ -71,6 +71,8 @@ async function login() {
 }
 
 async function checkLogin() {
+    const usernameDisplay = getEl("usernameDisplay")
+
     try {
         const response = await fetch("/api/me", {
             credentials: "include"
@@ -78,6 +80,13 @@ async function checkLogin() {
 
         if (!response.ok) {
             window.location.href = "/index.html"
+            return
+        }
+
+        const data = await response.json()
+
+        if (usernameDisplay) {
+            usernameDisplay.textContent = data.username
         }
 
     } catch (error) {
