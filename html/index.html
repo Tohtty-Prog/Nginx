@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Testi</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-    <div class="container">
-      <h1>Login</h1>
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
 
-      <input id="username" type="text" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
-      
-      <button onclick="window.location.href='/register.html'">Register</button>
+    <input id="username" type="text" placeholder="Username">
+    <p id="username-error" class="error"></p>
 
-      <button onclick="login()">Kirjaudu</button>
-      <p id="result"></p>
+    <input id="password" type="password" placeholder="Password">
+    <p id="password-error" class="error"></p>
+
+    <div class="button-row">
+      <button type="button" onclick="window.location.href='/register.html'">Register</button>
+      <button type="button" onclick="login()">Login</button>
     </div>
-    <script src="script.js"></script>
-  </body>
+
+    <p id="result"></p>
+  </div>
+
+  <script src="validation.js"></script>
+  <script src="auth.js"></script>
+</body>
 </html>

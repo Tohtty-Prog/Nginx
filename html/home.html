@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Testi</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body onload="checkLogin()">
-    <div class="container">
-      <h1>Welcome to home page</h1>
-      <button onclick="logout()">Kirjaudu ulos</button>
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="checkLogin()">
+  <div class="container">
+    <h1>Home</h1>
+    <p>You are logged in.</p>
+
+    <div class="button-row">
+      <button type="button" onclick="logout()">Logout</button>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <p id="result"></p>
+  </div>
+
+  <script src="validation.js"></script>
+  <script src="auth.js"></script>
+</body>
 </html>

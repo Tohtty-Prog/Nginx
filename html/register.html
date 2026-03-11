@@ -10,13 +10,23 @@
     <h1>Register</h1>
 
     <input id="username" type="text" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <input id="repassword" type="password" placeholder="Repeat password">
+    <p id="username-error" class="error"></p>
 
-    <button onclick="register()">Register</button>
+    <input id="password" type="password" placeholder="Password">
+    <p id="password-error" class="error"></p>
+
+    <input id="repassword" type="password" placeholder="Repeat password">
+    <p id="repassword-error" class="error"></p>
+
+    <div class="button-row">
+      <button type="button" onclick="window.location.href='/index.html'">Back</button>
+      <button type="button" onclick="register()">Create account</button>
+    </div>
+
     <p id="result"></p>
   </div>
 
-  <script src="script.js"></script>
+  <script src="validation.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>
