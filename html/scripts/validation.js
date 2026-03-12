@@ -2,10 +2,17 @@ function getEl(id) {
     return document.getElementById(id)
 }
 
-function showResult(message) {
-    const result = getEl("result")
-    if (result) {
-        result.textContent = message
+function clearError(field) {
+    const errorEl = getEl(field + "-error")
+    if (errorEl) {
+        errorEl.textContent = ""
+    }
+}
+
+function setError(field, message) {
+    const errorEl = getEl(field + "-error")
+    if (errorEl) {
+        errorEl.textContent = message
     }
 }
 
@@ -16,170 +23,57 @@ function clearResult() {
     }
 }
 
-function setFieldError(field, message) {
-    const input = getEl(field)
-    const error = getEl(field + "-error")
-
-    if (input) {
-        input.classList.add("invalid")
-    }
-
-    if (error) {
-        error.textContent = message
+function setResult(message) {
+    const result = getEl("result")
+    if (result) {
+        result.textContent = message
     }
 }
 
-function clearFieldError(field) {
-    const input = getEl(field)
-    const error = getEl(field + "-error")
-
-    if (input) {
-        input.classList.remove("invalid")
-    }
-
-    if (error) {
-        error.textContent = ""
-    }
-}
-
-function clearAllErrors() {
-    clearFieldError("username")
-    clearFieldError("password")
-    clearFieldError("repassword")
+function clearAuthErrors() {
+    clearError("username")
+    clearError("password")
+    clearError("repassword")
     clearResult()
 }
 
-function validateUsername(username) {
-    const value = username.trim()
+function validateLoginForm(username, password) {
+    let ok = true
 
-    if (!value) {
-        return "Username is required"
-    }
+    clearAuthErrors()
 
-    if (value.length < 3) {
-        return "Username must be at least 3 characters"
-    }
-
-    if (value.length > 20) {
-        return "Username can be max 20 characters"
-    }
-
-    if (value.includes(" ")) {
-        return "Username cannot contain spaces"
-    }
-
-    return null
-}
-
-function validatePassword(password) {
-    if (!password.trim()) {
-        return "Password is required"
+    if (username.length < 3) {
+        setError("username", "Username must be at least 3 characters")
+        ok = false
     }
 
     if (password.length < 8) {
-        return "Password must be at least 8 characters"
+        setError("password", "Password must be at least 8 characters")
+        ok = false
     }
 
-    if (password.length > 100) {
-        return "Password is too long"
-    }
-
-    return null
+    return ok
 }
 
-function validateRepeatPassword(password, repeatPassword) {
-    if (!repeatPassword.trim()) {
-        return "Repeat password is required"
+function validateRegisterForm(username, password, repassword) {
+    let ok = true
+
+    clearAuthErrors()
+
+    if (username.length < 3) {
+        setError("username", "Username must be at least 3 characters")
+        ok = false
     }
 
-    if (password !== repeatPassword) {
-        return "Passwords do not match"
+    if (password.length < 8) {
+        setError("password", "Password must be at least 8 characters")
+        ok = false
     }
 
-    return null
-}
-
-function getBackendErrorMessage(data) {
-    if (Array.isArray(data.detail) && data.detail.length > 0) {
-        return data.detail[0].msg || "Request failed"
+    if (password !== repassword) {
+        setError("repassword", "Passwords do not match")
+        ok = false
     }
 
-    if (typeof data.detail === "string") {
-        return data.detail
-    }
-
-    return "Request failed"
-}
-
-function showBackendValidationError(data) {
-    if (Array.isArray(data.detail) && data.detail.length > 0) {
-        const firstError = data.detail[0]
-        const field = firstError.loc ? firstError.loc[firstError.loc.length - 1] : null
-        const message = firstError.msg || "Invalid input"
-
-        if (field === "username") {
-            setFieldError("username", message)
-            return
-        }
-
-        if (field === "password") {
-            setFieldError("password", message)
-            return
-        }
-    }
-
-    showResult(getBackendErrorMessage(data))
-}
-
-function validateLoginForm() {
-    clearAllErrors()
-
-    const username = getEl("username")?.value || ""
-    const password = getEl("password")?.value || ""
-
-    let hasError = false
-
-    const usernameError = validateUsername(username)
-    if (usernameError) {
-        setFieldError("username", usernameError)
-        hasError = true
-    }
-
-    const passwordError = validatePassword(password)
-    if (passwordError) {
-        setFieldError("password", passwordError)
-        hasError = true
-    }
-
-    return !hasError
-}
-
-function validateRegisterForm() {
-    clearAllErrors()
-
-    const username = getEl("username")?.value || ""
-    const password = getEl("password")?.value || ""
-    const repassword = getEl("repassword")?.value || ""
-
-    let hasError = false
-
-    const usernameError = validateUsername(username)
-    if (usernameError) {
-        setFieldError("username", usernameError)
-        hasError = true
-    }
-
-    const passwordError = validatePassword(password)
-    if (passwordError) {
-        setFieldError("password", passwordError)
-        hasError = true
-    }
-
-    const repeatError = validateRepeatPassword(password, repassword)
-    if (repeatError) {
-        setFieldError("repassword", repeatError)
-        hasError = true
-    }
-
-    return !hasError
+    return ok
 }

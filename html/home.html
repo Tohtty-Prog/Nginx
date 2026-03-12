@@ -1,127 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home</title>
-  <link rel="stylesheet" href="styles/home.css">
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles/home.css">
 </head>
 <body onload="checkLogin()">
 
-  <header class="topbar">
-    <div class="logo">
-      <div class="logo-icon">T</div>
-      <div>
-        <div class="logo-title">Tohtty App</div>
-        <div class="logo-sub">Dashboard</div>
-      </div>
-    </div>
+    <div class="topbar">
+        <div class="topbar-left"></div>
 
-    <div class="userbox">
-      <div id="usernameDisplay">Loading...</div>
-      <div class="role">Role: <span id="roleDisplay">...</span></div>
-    </div>
-  </header>
-
-  <main class="page">
-    <h1 class="page-title">Home dashboard</h1>
-    <p class="page-sub">Manage your account and tools</p>
-
-    <div class="grid">
-      <div class="card actions-card">
-        <h2>Quick Actions</h2>
-
-        <button type="button" onclick="loadProfile()">Load profile</button>
-        <button type="button" onclick="loadNotifications()">Notifications</button>
-        <button type="button" onclick="changeOwnPassword()">Change password</button>
-        <button type="button" class="danger" onclick="logout()">Logout</button>
-      </div>
-
-      <div class="card chat-card">
-        <h2>Chat</h2>
-
-        <div id="chatBox" class="chat-box">
-          <div class="msg system-message">Welcome to the dashboard.</div>
-          <div class="msg">Chat will later use WebSocket.</div>
+        <div class="topbar-center">
+            Home
         </div>
 
-        <div class="chat-input">
-          <input type="text" id="chatInput" placeholder="Write something...">
-          <button type="button" onclick="sendFakeMessage()">Send</button>
+        <div class="topbar-right">
+            <div class="user-menu">
+
+                <div class="user-button" onclick="toggleMenu()">
+                    <div class="avatar" id="avatarCircle">U</div>
+                    <span id="usernameDisplay">Loading...</span>
+                    <span class="arrow">▼</span>
+                </div>
+
+                <div class="dropdown" id="userDropdown">
+                    <div class="dropdown-item">
+                        Username: <span id="dropdownUsername">Loading...</span>
+                    </div>
+
+                    <div class="dropdown-item">
+                        Role: <span id="roleDisplay">...</span>
+                    </div>
+
+                    <div class="dropdown-item logout" onclick="logout()">
+                        Logout
+                    </div>
+                </div>
+
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="card account-card">
-        <h2>Account</h2>
+    <div class="main">
 
-        <div class="account-info">
-          <div class="info-row">
-            <span class="info-label">User</span>
-            <span class="info-value" id="accountUsername">Loading...</span>
-          </div>
+        <div class="chatbox">
+            <h2>Chatbox</h2>
 
-          <div class="info-row">
-            <span class="info-label">Role</span>
-            <span class="info-value" id="accountRole">Loading...</span>
-          </div>
+            <div id="chatMessages" class="chat-messages"></div>
+
+            <div class="chat-input">
+                <input
+                    id="chatInput"
+                    type="text"
+                    placeholder="Write message..."
+                    onkeydown="handleChatEnter(event)"
+                >
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div id="adminPanel" class="card admin" style="display:none;">
-      <div class="admin-header">
-        <div>
-          <h2>Admin Panel</h2>
-          <p class="admin-sub">Manage users and reset passwords</p>
-        </div>
+    <script src="scripts/validation.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/chat.js"></script>
 
-        <button type="button" onclick="loadUsers()">Refresh users</button>
-      </div>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("userDropdown")
+            menu.classList.toggle("show")
+        }
 
-      <div id="usersList" class="users-list">
-        <p>No users loaded.</p>
-      </div>
-    </div>
-
-    <div class="card system-panel">
-      <h2>System</h2>
-
-      <div class="system-actions">
-        <button type="button" onclick="pingServer()">Ping server</button>
-        <button type="button" onclick="clearChat()">Clear chat</button>
-      </div>
-    </div>
-
-    <p id="result"></p>
-  </main>
-
-  <div id="resetPasswordModal" class="modal hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Reset password</h3>
-        <button type="button" class="close-button" onclick="closeResetPasswordModal()">×</button>
-      </div>
-
-      <p class="modal-text">
-        Set a new password for <strong id="resetPasswordUsername">user</strong>
-      </p>
-
-      <label class="modal-label" for="resetPasswordInput">New password</label>
-      <input type="password" id="resetPasswordInput" placeholder="Enter new password">
-
-      <label class="modal-label" for="resetPasswordConfirmInput">Confirm password</label>
-      <input type="password" id="resetPasswordConfirmInput" placeholder="Confirm new password">
-
-      <p id="resetPasswordError" class="modal-error"></p>
-
-      <div class="modal-actions">
-        <button type="button" class="secondary-button" onclick="closeResetPasswordModal()">Cancel</button>
-        <button type="button" onclick="submitResetPassword()">Reset password</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="scripts/validation.js"></script>
-  <script src="scripts/auth.js"></script>
+        window.onclick = function(event) {
+            if (!event.target.closest(".user-menu")) {
+                const menu = document.getElementById("userDropdown")
+                if (menu) {
+                    menu.classList.remove("show")
+                }
+            }
+        }
+    </script>
 </body>
 </html>
