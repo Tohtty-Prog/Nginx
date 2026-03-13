@@ -27,43 +27,97 @@ function updateProfileAvatar(data) {
     }
 }
 
-async function initProfilePage() {
+function fillProfile(data) {
+    const username = document.getElementById("profileUsername")
+    const id = document.getElementById("profileId")
+    const role = document.getElementById("profileRole")
+    const joined = document.getElementById("profileJoined")
+
+    if (username) {
+        username.textContent = data.username || "Unknown user"
+    }
+
+    if (id) {
+        id.textContent = data.id ?? "-"
+    }
+
+    if (role) {
+        role.textContent = data.role || "user"
+    }
+
+    if (joined) {
+        joined.textContent = formatJoinedDate(data.created_at)
+    }
+
+    updateProfileAvatar(data)
+}
+
+function getProfileIdFromUrl() {
+    const params = new URLSearchParams(window.location.search)
+    return params.get("id")
+}
+
+async function set_Avatar() {
+    const fileInput = document.getElementById("avatarUpload")
+
+    if (!fileInput || !fileInput.files.length) {
+        return
+    }
+
+    const file = fileInput.files[0]
+
+    const formData = new FormData()
+    formData.append("avatar", file)
+
     try {
-        const response = await fetch("/api/me", {
-            method: "GET",
-            credentials: "include"
+        const response = await fetch("/api/me/avatar", {
+            method: "POST",
+            credentials: "include",
+            body: formData
         })
 
         if (!response.ok) {
-            window.location.href = "/index.html"
+            console.error("Avatar upload failed:", response.status)
+            return
+        }
+
+        await initProfilePage()
+    } catch (error) {
+        console.error("Avatar upload error:", error)
+    }
+}
+
+
+async function initProfilePage() {
+    try {
+        const profileId = getProfileIdFromUrl()
+        const uploadSection = document.getElementById("avatarUploadSection")
+
+        let response
+
+        if (profileId) {
+            if(uploadSection) {
+                uploadSection.style.display = "none"
+            }
+            response = await fetch(`/api/users/${profileId}`, {
+                method: "GET",
+                credentials: "include"
+            })
+        } else {
+            response = await fetch("/api/me", {
+                method: "GET",
+                credentials: "include"
+            })
+        }
+
+        if (!response.ok) {
+            console.log("Failed to load profile:", response.status)
             return
         }
 
         const data = await response.json()
-
-        const username = document.getElementById("profileUsername")
-        const id = document.getElementById("profileId")
-        const role = document.getElementById("profileRole")
-        const joined = document.getElementById("profileJoined")
-
-        if (username) {
-            username.textContent = data.username || "Unknown user"
-        }
-
-        if (id) {
-            id.textContent = data.id ?? "-"
-        }
-
-        if (role) {
-            role.textContent = data.role || "user"
-        }
-
-        if (joined) {
-            joined.textContent = formatJoinedDate(data.created_at)
-        }
-
-        updateProfileAvatar(data)
+        fillProfile(data)
     } catch (error) {
-        window.location.href = "/index.html"
+        console.error("Profile page error:", error)
     }
 }

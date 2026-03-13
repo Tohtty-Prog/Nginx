@@ -62,9 +62,11 @@ function createMessageElement(msg) {
 function renderOnlineUsers(users) {
     const container = document.getElementById("onlineUsers")
     const title = document.getElementById("onlineUsersTitle")
+
     if (title) {
         title.textContent = `Online Users (${users.length})`
     }
+
     if (!container) return
     container.innerHTML = ""
 
@@ -72,17 +74,32 @@ function renderOnlineUsers(users) {
         container.innerHTML = '<div class="empty-text">No users online</div>'
         return
     }
+
     users.forEach(user => {
         const row = document.createElement("div")
         row.classList.add("online-user")
 
+        row.onclick = () => {
+            if (user.username === currentUser) {
+            window.location.href = "/profile.html"
+            } else {
+            window.location.href = `/profile.html?id=${user.id}`
+            }
+        }
+
+        const label = user.username === currentUser
+            ? `${user.username} (You)`
+            : user.username
+
         row.innerHTML = `
             <span class="online-dot"></span>
-            <span>${user}</span>
+            <span>${label}</span>
         `
+
         container.appendChild(row)
     })
 }
+
 
 function addMessageToChat(msg) {
     const box = getChatBox()
