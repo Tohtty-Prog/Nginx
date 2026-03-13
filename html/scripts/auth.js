@@ -1,11 +1,36 @@
 let currentUser = null
+let currentUserId = null
+let currentRole = null
+let currentCreatedAt = null
+
+function prepareFormState() {
+    if (typeof clearResult === "function") {
+        clearResult()
+    }
+
+    if (typeof clearAllErrors === "function") {
+        clearAllErrors()
+    }
+}
+
+function showRequestError(message) {
+    if (typeof setResult === "function") {
+        setResult(message)
+    } else {
+        console.error(message)
+    }
+}
 
 async function login() {
-    const username = document.getElementById("username").value.trim()
-    const password = document.getElementById("password").value
+    const username = document.getElementById("username")?.value.trim() || ""
+    const password = document.getElementById("password")?.value || ""
 
-    if (!validateLoginForm(username, password)) {
-        return
+    prepareFormState()
+
+    if (typeof validateLoginForm === "function") {
+        if (!validateLoginForm(username, password)) {
+            return
+        }
     }
 
     try {
@@ -28,19 +53,23 @@ async function login() {
             return
         }
 
-        setResult(data.detail || "Login failed")
+        showRequestError(data.detail || "Login failed")
     } catch (error) {
-        setResult("Server connection failed")
+        showRequestError("Server connection failed")
     }
 }
 
 async function register() {
-    const username = document.getElementById("username").value.trim()
-    const password = document.getElementById("password").value
-    const repassword = document.getElementById("repassword").value
+    const username = document.getElementById("username")?.value.trim() || ""
+    const password = document.getElementById("password")?.value || ""
+    const repassword = document.getElementById("repassword")?.value || ""
 
-    if (!validateRegisterForm(username, password, repassword)) {
-        return
+    prepareFormState()
+
+    if (typeof validateRegisterForm === "function") {
+        if (!validateRegisterForm(username, password, repassword)) {
+            return
+        }
     }
 
     try {
@@ -63,9 +92,21 @@ async function register() {
             return
         }
 
-        setResult(data.detail || "Register failed")
+        showRequestError(data.detail || "Register failed")
     } catch (error) {
-        setResult("Server connection failed")
+        showRequestError("Server connection failed")
+    }
+}
+
+function updateAvatar(data) {
+    const avatarCircle = document.getElementById("avatarCircle")
+    if (!avatarCircle) return
+
+    if (data.avatar) {
+        avatarCircle.innerHTML =
+            `<img src="${data.avatar}" alt="Avatar" onerror="this.remove()">`
+    } else if (data.username) {
+        avatarCircle.textContent = data.username.charAt(0).toUpperCase()
     }
 }
 
@@ -84,12 +125,15 @@ async function checkLogin() {
 
         if (!response.ok) {
             window.location.href = "/index.html"
-            return
+            return null
         }
 
         const data = await response.json()
 
         currentUser = data.username
+        currentUserId = data.id
+        currentRole = data.role || "user"
+        currentCreatedAt = data.created_at || null
 
         if (usernameDisplay) {
             usernameDisplay.textContent = data.username
@@ -100,22 +144,21 @@ async function checkLogin() {
         }
 
         if (roleDisplay) {
-            roleDisplay.textContent = data.role || "user"
+            roleDisplay.textContent = currentRole
         }
 
         if (result) {
             result.textContent = "Welcome " + data.username
         }
+        updateAvatar(data)
 
-        if (avatarCircle && data.username) {
-            avatarCircle.textContent = data.username.charAt(0).toUpperCase()
-        }
-
-        if (typeof loadMessages === "function") {
-            loadMessages()
+        return {
+            username: data.username,
+            role: currentRole
         }
     } catch (error) {
         window.location.href = "/index.html"
+        return null
     }
 }
 
@@ -131,8 +174,8 @@ async function logout() {
             return
         }
 
-        setResult("Logout failed")
+        showRequestError("Logout failed")
     } catch (error) {
-        setResult("Server connection failed")
+        showRequestError("Server connection failed")
     }
 }

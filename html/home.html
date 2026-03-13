@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
     <link rel="stylesheet" href="styles/home.css">
 </head>
-<body onload="checkLogin()">
+<body onload="initHomePage()">
 
     <div class="topbar">
-        <div class="topbar-left"></div>
+        <div class="topbar-left">
+            <div class="brand">Chat App</div>
+        </div>
 
         <div class="topbar-center">
             Home
         </div>
 
         <div class="topbar-right">
-            <div class="user-menu">
+            <button id="adminPanelButton" class="admin-btn hidden" onclick="goToAdminPanel()">
+                Admin Panel
+            </button>
 
+            <div class="user-menu">
                 <div class="user-button" onclick="toggleMenu()">
                     <div class="avatar" id="avatarCircle">U</div>
                     <span id="usernameDisplay">Loading...</span>
@@ -32,37 +38,81 @@
                         Role: <span id="roleDisplay">...</span>
                     </div>
 
+                    <div class="dropdown-item proifle-link" onclick="goToProfile()">Profile</div>
+
                     <div class="dropdown-item logout" onclick="logout()">
                         Logout
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <div class="main">
+        <div class="layout">
 
-        <div class="chatbox">
-            <h2>Chatbox</h2>
+            <div class="chatbox">
+                <div class="section-header">
+                    <h2>Chat</h2>
+                    <p>Realtime messages with other users</p>
+                </div>
 
-            <div id="chatMessages" class="chat-messages"></div>
+                <div id="chatMessages" class="chat-messages"></div>
 
-            <div class="chat-input">
-                <input
-                    id="chatInput"
-                    type="text"
-                    placeholder="Write message..."
-                    onkeydown="handleChatEnter(event)"
-                >
-                <button onclick="sendMessage()">Send</button>
+                <div id="typingIndicator" class="typing-indicator"></div>
+
+                <div class="chat-input">
+                    <input
+                        id="chatInput"
+                        type="text"
+                        placeholder="Write message..."
+                        onkeydown="handleChatEnter(event)"
+                    >
+                    <button onclick="sendMessage()">Send</button>
+                </div>
             </div>
+
+            <div class="sidebar">
+                <div class="side-box">
+                    <div class="section-header small">
+                        <h3 id="onlineUsersTitle">Online Users</h3>
+                        <p>Who is currently in chat</p>
+                    </div>
+
+                    <div id="onlineUsers" class="online-users">
+                        <div class="empty-text">No users online</div>
+                    </div>
+                </div>
+
+                <div class="side-box">
+                    <div class="section-header small">
+                        <h3>Announcements</h3>
+                        <p>Latest updates and notices</p>
+                    </div>
+
+                    <div class="announcements">
+                        <div class="announcement-item">
+                            Welcome to the chat.
+                        </div>
+
+                        <div class="announcement-item">
+                            Timestamps and online users coming soon.
+                        </div>
+
+                        <div class="announcement-item">
+                            Be respectful in chat.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script src="scripts/validation.js"></script>
     <script src="scripts/auth.js"></script>
     <script src="scripts/chat.js"></script>
+    <script src="scripts/home.js"></script>
 
     <script>
         function toggleMenu() {
@@ -76,6 +126,21 @@
                 if (menu) {
                     menu.classList.remove("show")
                 }
+            }
+        }
+
+        function goToProfile() {
+            window.location.href = "profile.html"
+        }
+
+        function goToAdminPanel() {
+            window.location.href = "admin.html"
+        }
+
+        function showAdminButton(role) {
+            const button = document.getElementById("adminPanelButton")
+            if (role === "admin") {
+                button.classList.remove("hidden")
             }
         }
     </script>
