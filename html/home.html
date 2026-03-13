@@ -71,6 +71,25 @@
                     <button onclick="sendMessage()">Send</button>
                 </div>
             </div>
+            
+            <div class="forum-preview">
+                
+                <div class="side-box forum-box">
+
+                    <div class="section-header">
+                        <h3>Pinned Threads</h3>
+                    </div>
+
+                    <div id="pinnedThreads" class="thread-list pinned-threads"></div>
+
+
+                    <div class="section-header small">
+                        <h3>Latest Threads</h3>
+                    </div>
+
+                    <div id="latestThreads" class="thread-list latest-threads"></div>
+                </div>
+            </div>
 
             <div class="sidebar">
                 <div class="side-box">
@@ -109,10 +128,10 @@
         </div>
     </div>
 
-    <script src="scripts/validation.js"></script>
-    <script src="scripts/auth.js"></script>
-    <script src="scripts/chat.js"></script>
-    <script src="scripts/home.js"></script>
+    <script src="/scripts/validation.js"></script>
+    <script src="/scripts/auth.js"></script>
+    <script src="/scripts/chat.js"></script>
+    <script src="/scripts/home.js"></script>
 
     <script>
         function toggleMenu() {
@@ -130,7 +149,7 @@
         }
 
         function goToProfile() {
-            window.location.href = "profile.html"
+            window.location.href = "/profile.html"
         }
 
         function goToAdminPanel() {
@@ -139,10 +158,18 @@
 
         function showAdminButton(role) {
             const button = document.getElementById("adminPanelButton")
-            if (role === "admin") {
+
+            if (!button) {
+                return
+            }
+
+            if ((role || "").toLowerCase() === "admin") {
                 button.classList.remove("hidden")
+            } else {
+                button.classList.add("hidden")
             }
         }
+
     </script>
 </body>
 </html>
