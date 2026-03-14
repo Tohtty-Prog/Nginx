@@ -1,0 +1,293 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+    color: #1f2937;
+}
+
+/* Top bar */
+
+.topbar {
+    background: white;
+    height: 70px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #dbe2ea;
+}
+
+.topbar-left,
+.topbar-center,
+.topbar-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.topbar-center {
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.topbar-right {
+    justify-content: flex-end;
+    gap: 14px;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ADMIN BUTTON */
+
+.admin-btn {
+    border: none;
+    border-radius: 8px;
+    background: #1f2937;
+    color: white;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-btn:hover {
+    background: #111827;
+}
+
+.hidden {
+    display: none;
+}
+
+/* USER MENU */
+
+.user-menu {
+    position: relative;
+}
+
+.user-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.user-button:hover {
+    background: #f0f0f0;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    background: #3b6edc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.arrow {
+    font-size: 12px;
+    color: #555;
+}
+
+/* DROPDOWN */
+
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 220px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 12px 15px;
+}
+
+.dropdown-item:hover {
+    background: #f5f5f5;
+}
+
+.profile-link {
+    cursor: pointer;
+}
+.profile-link:hover {
+    background: #f5f5f5;
+}
+
+.logout {
+    color: red;
+    cursor: pointer;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+button,
+.back-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #3b6edc;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+button:hover,
+.back-btn:hover {
+    background: #2f58b3;
+}
+
+/* MAIN */
+
+.main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* FORM CARD */
+
+.thread-form-card {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.thread-form-card h1 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+}
+
+.subtitle {
+    margin: 0 0 24px 0;
+    color: #64748b;
+    font-size: 15px;
+}
+
+/* FORM */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+
+.form-group textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3b6edc;
+}
+
+/* ACTIONS */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.secondary-btn {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.secondary-btn:hover {
+    background: #d1d5db;
+}
+
+/* RESULT */
+
+.result {
+    min-height: 20px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.result.error {
+    color: #dc2626;
+}
+
+.result.success {
+    color: #16a34a;
+}
+
+/* MOBILE */
+
+@media (max-width: 640px) {
+    .main {
+        margin: 24px auto;
+        padding: 0 12px;
+    }
+
+    .thread-form-card {
+        padding: 20px;
+    }
+
+    .thread-form-card h1 {
+        font-size: 26px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}

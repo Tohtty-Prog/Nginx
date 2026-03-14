@@ -73,7 +73,6 @@
             </div>
             
             <div class="forum-preview">
-                
                 <div class="side-box forum-box">
 
                     <div class="section-header">
@@ -88,6 +87,10 @@
                     </div>
 
                     <div id="latestThreads" class="thread-list latest-threads"></div>
+                </div>
+
+                <div class="forum-actions">
+                    <button onclick="goToNewThread()">New Thread</button>
                 </div>
             </div>
 
@@ -155,6 +158,11 @@
         function goToAdminPanel() {
             window.location.href = "admin.html"
         }
+
+        function goToNewThread() {
+            window.location.href = "/new-thread.html"
+        }
+
 
         function showAdminButton(role) {
             const button = document.getElementById("adminPanelButton")
